@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.ReadOnlyFoodList;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
 
@@ -18,14 +19,17 @@ public class StorageManager implements Storage {
 
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private AddressBookStorage addressBookStorage;
+    private UniqueFoodListStorage uniqueFoodListStorage;
     private UserPrefsStorage userPrefsStorage;
 
     /**
      * Creates a {@code StorageManager} with the given {@code AddressBookStorage} and {@code UserPrefStorage}.
      */
-    public StorageManager(AddressBookStorage addressBookStorage, UserPrefsStorage userPrefsStorage) {
+    public StorageManager(AddressBookStorage addressBookStorage, UniqueFoodListStorage uniqueFoodListStorage,
+                          UserPrefsStorage userPrefsStorage) {
         super();
         this.addressBookStorage = addressBookStorage;
+        this.uniqueFoodListStorage = uniqueFoodListStorage;
         this.userPrefsStorage = userPrefsStorage;
     }
 
@@ -76,4 +80,33 @@ public class StorageManager implements Storage {
         addressBookStorage.saveAddressBook(addressBook, filePath);
     }
 
+    // ================ FoodList methods ==============================
+
+    @Override
+    public Path getFoodListFilePath() {
+        return uniqueFoodListStorage.getFoodListFilePath();
+    }
+
+    @Override
+    public Optional<ReadOnlyFoodList> readFoodList() throws DataConversionException, IOException {
+        return readFoodList(uniqueFoodListStorage.getFoodListFilePath());
+    }
+
+    @Override
+    public Optional<ReadOnlyFoodList> readFoodList(Path filePath) throws DataConversionException, IOException {
+        logger.fine("Attempting to read data from file: " + filePath);
+        return uniqueFoodListStorage.readFoodList(filePath);
+    }
+
+    @Override
+    public void saveFoodList(ReadOnlyFoodList foodList) throws IOException {
+        saveFoodList(foodList, uniqueFoodListStorage.getFoodListFilePath());
+    }
+
+    @Override
+    public void saveFoodList(ReadOnlyFoodList foodList, Path filePath) throws IOException {
+        logger.fine("Attempting to write to data file: " + filePath);
+        uniqueFoodListStorage.saveFoodList(foodList, filePath);
+    }
+    
 }

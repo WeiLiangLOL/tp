@@ -15,11 +15,4 @@ public interface ReadOnlyAddressBook {
      */
     ObservableList<Person> getPersonList();
 
-    /**
-     * Returns a view of the food list.
-     *
-     * @return food list
-     */
-    UniqueFoodList getFoodList();
-
 }

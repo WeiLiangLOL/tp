@@ -14,11 +14,11 @@ import seedu.address.model.person.UniquePersonList;
  * Wraps all data at the address-book level
  * Duplicates are not allowed (by .isSamePerson comparison)
  */
-public class AddressBook implements ReadOnlyAddressBook {
+public class AddressBook implements ReadOnlyAddressBook, ReadOnlyFoodList {
 
     private final UniquePersonList persons;
-
     private final UniqueFoodList foodList;
+
     //Used to have an old comment here, removed due to checkstyle error. Refer to old template for more.
     {
         persons = new UniquePersonList();
@@ -107,8 +107,8 @@ public class AddressBook implements ReadOnlyAddressBook {
      *
      * @return a unique food list
      */
-    public UniqueFoodList getFoodList() {
-        return foodList;
+    public ObservableList<Food> getFoodList() {
+        return foodList.getFoodList();
     }
 
     /**
@@ -171,6 +171,5 @@ public class AddressBook implements ReadOnlyAddressBook {
     public int hashCode() {
         return persons.hashCode();
     }
-
 
 }

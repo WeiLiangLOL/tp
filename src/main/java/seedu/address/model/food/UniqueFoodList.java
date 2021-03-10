@@ -1,14 +1,25 @@
 package seedu.address.model.food;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import seedu.address.model.ReadOnlyFoodList;
 import seedu.address.model.food.exceptions.FoodItemNotFoundException;
+import seedu.address.model.person.Person;
 
-public class UniqueFoodList {
-    private ArrayList<Food> foodList;
+public class UniqueFoodList implements ReadOnlyFoodList, Iterable<Food>  {
+
+    private final ObservableList<Food> foodList;
+
+    public UniqueFoodList(ReadOnlyFoodList list) {
+        foodList = FXCollections.observableArrayList(list.getFoodList());
+    }
 
     public UniqueFoodList() {
-        foodList = new ArrayList<>();
+        foodList = FXCollections.observableArrayList();
     }
 
     /**
@@ -16,8 +27,8 @@ public class UniqueFoodList {
      *
      * @return food list
      */
-    public ArrayList getFoodList() {
-        return this.foodList;
+    public ObservableList<Food> getFoodList() {
+        return foodList;
     }
 
     /**
@@ -86,4 +97,18 @@ public class UniqueFoodList {
         }
         return stringBuilder.toString();
     }
+
+    /**
+     * Returns the backing list as an unmodifiable {@code ObservableList}.
+     */
+    public ObservableList<Food> asUnmodifiableObservableList() {
+        return FXCollections.unmodifiableObservableList(
+                FXCollections.observableArrayList(foodList));
+    }
+
+    @Override
+    public Iterator<Food> iterator() {
+        return foodList.iterator();
+    }
+
 }
